@@ -1,0 +1,1 @@
+import{readFileSync}from"node:fs";const pkg=JSON.parse(readFileSync("package.json","utf8")),manifest=JSON.parse(readFileSync("release-manifest.json","utf8"));if(pkg.version!==manifest.version)throw new Error("version drift");process.stdout.write(`version ${pkg.version} consistent\n`);

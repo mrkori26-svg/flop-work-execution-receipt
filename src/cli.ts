@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+import{readFileSync}from"node:fs";import{canonicalJson,receiptDigest,receiptId,validateReceipt}from"./index.js";
+const[command,path]=process.argv.slice(2),usage="usage: flop-receipt validate <receipt.json> | digest <receipt.json> | canonical <receipt.json>\n";
+if(command==="--help"||command==="help"){process.stdout.write(usage);process.exit(0);}if(!path){process.stderr.write(usage);process.exit(2);}const value=JSON.parse(readFileSync(path,"utf8"));try{if(command==="validate")process.stdout.write(JSON.stringify({valid:true,receipt_id:validateReceipt(value).receipt_id})+"\n");else if(command==="digest")process.stdout.write(receiptDigest(validateReceipt(value))+"\n");else if(command==="canonical")process.stdout.write(canonicalJson(validateReceipt(value))+"\n");else{process.stderr.write(usage);process.exit(2);}}catch(error){process.stderr.write((error instanceof Error?error.message:"invalid receipt")+"\n");process.exit(1);}

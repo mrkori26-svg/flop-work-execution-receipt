@@ -1,0 +1,8 @@
+import{createHash}from"node:crypto";
+import{canonicalJson}from"./canonical.js";
+import type{CoordinationEvidence,ExecutionEvidence,VerificationState}from"./types.js";
+const digest=(value:unknown)=>"sha256:"+createHash("sha256").update(typeof value==="string"?value:canonicalJson(value)).digest("hex");
+export function fromRouterDecision(decision:{decisionId:string;decisionDigest?:string;snapshotHash?:string}):CoordinationEvidence{return{system:"flop-session-router",frame_type:"router-decision",digest:decision.decisionDigest??decision.snapshotHash??digest(decision),verification_state:"UNVERIFIED",source_ref:`router:${decision.decisionId}`};}
+export function fromTclkTranscript(lines:string[],sourceRef:string,verification_state:VerificationState="UNVERIFIED"):CoordinationEvidence{return{system:"tclk/1",frame_type:"transcript",digest:digest(lines),verification_state,source_ref:sourceRef};}
+export function fromTechnocoreExport(rawJsonl:string,sourceRef:string):CoordinationEvidence{return{system:"technocore",frame_type:"venue-export",digest:digest(rawJsonl),verification_state:"UNVERIFIED",source_ref:sourceRef};}
+export function fromEvidenceRecord(record:{artifact_digest?:string;artifactDigest?:string;verification_state?:VerificationState;verificationState?:VerificationState;event_time?:string;eventTime?:string;id:string;verifier_ref?:string}):ExecutionEvidence{const artifact=record.artifact_digest??record.artifactDigest;if(!artifact)throw new Error("EVIDENCE_ARTIFACT_DIGEST_REQUIRED");return{evidence_type:"evidence-record",artifact_digest:artifact,verifier_ref:record.verifier_ref,verification_state:record.verification_state??record.verificationState??"UNKNOWN",event_time:record.event_time??record.eventTime,source_ref:`evidence:${record.id}`};}
