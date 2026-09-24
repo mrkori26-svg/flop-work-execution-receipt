@@ -1,7 +1,13 @@
-# Publication readiness
+# Publication status
 
-Status: `LOCAL_RELEASE_CANDIDATE / GITHUB_REPOSITORY_NOT_CREATED`.
+Status: `PUBLIC_ALPHA / GITHUB_RELEASED`.
 
-No productive DID, key, passphrase, wallet, rail, runtime or API credential is required. NPM publication is `NPM_PUBLICATION_PENDING_SCOPE_OWNERSHIP`.
+Repository: `retardio73-boop/flop-work-execution-receipt`.
 
-The publication script requires an already authenticated GitHub CLI, refuses a dirty tree or conflicting remote, creates only `OWNER/flop-work-execution-receipt`, runs all checks, packs fresh artifacts and creates an alpha release. It contains no credentials and never starts interactive authentication.
+Current public release: `v0.1.0-alpha`.
+
+The package is an alpha interoperability surface for portable work/execution receipts. No productive DID, key, passphrase, wallet, rail, runtime, or API credential is required.
+
+NPM publication remains `NPM_PUBLICATION_PENDING_SCOPE_OWNERSHIP`; GitHub source and release publication are complete.
+
+Publication and release checks must remain fail-closed: clean tracked tree, authenticated GitHub CLI, full test/typecheck/version/pack checks, and no interactive credential bootstrap.
