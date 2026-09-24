@@ -1,5 +1,9 @@
 # Portable Work / Execution Receipt
 
+> **FLOP Tools / COMPONENT** · bridges execution into portable evidence for [PROVE](https://github.com/retardio73-boop/flop-conformance-lab), with routing context from [ROUTE](https://github.com/retardio73-boop/flop-session-router).
+>
+> `execute -> Execution Receipt -> EvidenceBundle -> verify`
+
 Community project. Not an official FLOP Labs product. Alpha / early public release.
 
 A small, deterministic evidence envelope for referring to coordination, execution artifacts, venue exports, Router decisions and rail-specific observations without upgrading what those observations prove.
