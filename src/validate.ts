@@ -89,5 +89,5 @@ export function validateReceipt(value:unknown):WorkExecutionReceipt{
 
   const{receipt_id,...body}=receipt;
   if(!DIGEST.test(receipt_id)||receipt_id!==receiptId(body as ReceiptBody))throw new Error("RECEIPT_ID_MISMATCH");
-  return receipt;
+  return structuredClone(receipt);
 }

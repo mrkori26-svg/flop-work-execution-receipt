@@ -35,3 +35,13 @@ test("optional references and evidence refs are bounded",()=>{
   assert.throws(()=>createReceipt({...body,evidence_refs:[""]}),/INVALID_EVIDENCE_REFS/);
   assert.throws(()=>createReceipt({...body,participants:[{identifier:"did:key:zExample",identifier_type:"did:key",role:""}]}),/INVALID_PARTICIPANT_ROLE/);
 });
+
+
+test("validated receipt is detached from mutable caller object",()=>{
+  const receipt=createReceipt(body);
+  const external=structuredClone(receipt);
+  const validated=validateReceipt(external);
+  external.participants[0]!.identifier="did:key:mutated-after-validation";
+  assert.equal(validated.participants[0]?.identifier,"did:key:zExample");
+  assert.notEqual(validated,external);
+});
