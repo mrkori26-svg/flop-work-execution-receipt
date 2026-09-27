@@ -17,3 +17,21 @@ test("E.49 keeps settlement distinct from independent demand and allocation",()=
   bad.receipt_id=receipt.receipt_id;
   assert.throws(()=>validateReceipt(bad),/DEMAND_INDEPENDENCE_NOT_DERIVABLE/);
 });
+
+
+test("created receipt is detached from mutable caller input",()=>{
+  const mutable:ReceiptBody=structuredClone(body);
+  const receipt=createReceipt(mutable);
+  mutable.participants[0]!.identifier="did:key:mutated";
+  mutable.coverage.gaps?.push("later mutation");
+  assert.equal(receipt.participants[0]?.identifier,"did:key:zExample");
+  assert.deepEqual(receipt.coverage.gaps,["settlement unavailable"]);
+  assert.equal(receipt.receipt_id,"sha256:83fa62de178a898a8fb770d30344c184bc133f9ad78b792711f6e8fd917fecf2");
+});
+
+test("optional references and evidence refs are bounded",()=>{
+  assert.throws(()=>createReceipt({...body,work_id:""}),/INVALID_WORK_ID/);
+  assert.throws(()=>createReceipt({...body,deal_id:""}),/INVALID_DEAL_ID/);
+  assert.throws(()=>createReceipt({...body,evidence_refs:[""]}),/INVALID_EVIDENCE_REFS/);
+  assert.throws(()=>createReceipt({...body,participants:[{identifier:"did:key:zExample",identifier_type:"did:key",role:""}]}),/INVALID_PARTICIPANT_ROLE/);
+});
